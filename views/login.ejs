@@ -1,0 +1,22 @@
+<%- include("partials/header"); -%>
+
+<div class="centre login-page">
+  <div class="login-box centre">
+    <div class="login-items">
+      <h3 class="login-title">Sign In:</h3>
+      <form>
+      <div class="form-group">
+        <label for="email-address">Email address</label>
+        <input type="email" class="form-control" id="email-address" aria-describedby="emailHelp">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password">
+      </div>
+      <button type="submit" class="btn btn-primary login-button">Login</button>
+    </form>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/noFooter.ejs"); -%>

@@ -1,0 +1,29 @@
+<%- include("partials/header"); -%>
+
+<div class="row product-page">
+  <div class="col-md-3 product-bar">
+
+  </div>
+
+  <div class="col-md-9 product-section">
+    <div class="row">
+
+      <% foundItems.forEach(item => { %>
+      <div class="col-md-4">
+        <div class="card product-card">
+          <a class="card-anchor" href="/products/<%= item.name %>">
+            <img class="card-img-top" src="<%= item.source %>" alt="<%= item.name %>.img">
+            <div class="card-body">
+              <h5 class="card-title"><%= item.name %></h5>
+              <p class="card-text price"><small class="text-muted">£ <%= item.price %></small></p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <% }) %>
+
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer"); -%>
