@@ -230,7 +230,7 @@ footer i {
 
 .login-page {
   height: 100vh;
-  background-color: #216353;
+  background-color: #a8e6cf;
 }
 
 .login-box {
@@ -253,8 +253,18 @@ footer i {
   margin-bottom: 2rem;
 }
 
+.button-anchor {
+    flex: 1;
+}
+
 .login-button {
   margin-top: 1rem;
+  width: 80%;
+
+}
+
+.login-buttons {
+  display: flex;
 }
 
 /* Products */
@@ -293,11 +303,11 @@ h5 {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.4);
   }
 
-.card-anchor, .card-anchor:hover{
+.card-anchor, .card-anchor:hover {
   color: initial;
 }
 
-.card-anchor:hover {
+.card-anchor:hover, .link:hover {
   text-decoration: initial;
 }
 
@@ -328,4 +338,50 @@ h5 {
   height: 450px;
   width: 600px;
   flex: 1;
+}
+
+.product-page-header {
+  padding-top: 50px;
+}
+
+/* Account page */
+
+.account-bar {
+  background-color: #313131;
+}
+
+.account-list {
+  margin-top: 100px;
+  font-size: 1.15rem;
+  line-height: 2.5rem;
+  list-style: none;
+  color: #999;
+  position: fixed;
+}
+
+.account-title {
+  font-family: 'Yellowtail', cursive;
+  margin-bottom: 2rem;
+}
+
+.account-subTitle {
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.account-container {
+  padding: 8%;
+}
+
+.account-page {
+  height: 100vh;
+}
+
+.account-page-box {
+  background: rgba(0,0,0,0.12);
+  padding: 4%;
+}
+
+.link, .link:visited, .link:hover, .link:active {
+  color: inherit;
 }
