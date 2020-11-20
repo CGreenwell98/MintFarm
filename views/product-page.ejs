@@ -13,8 +13,10 @@
       </div>
       <div class="product-price-btn">
         <p>Standard price: £<span><%= item.price %></span></p>
-        <p>Bulk price: £<span><%= item.bulkPrice %></span></p>
-        <button class="btn btn-dark">buy now</button>
+        <p>Bulk price: £<span><%= item.bulkPrice %> <small class="text-muted"> (for 100+ items)</small></p>
+        <form action="/products/<%= item.name %>" method="post">
+          <button type="submit" class="btn btn-dark">buy now</button>
+        </form>
       </div>
     </div>
   </div>

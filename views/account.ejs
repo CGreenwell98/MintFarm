@@ -1,6 +1,8 @@
 <%- include("partials/header"); -%>
 
 <div class="row">
+
+  <!-- Left Nav-bar -->
   <div class="col-md-2 account-bar">
     <form action="/account" method="post">
       <ul class="account-list">
@@ -11,19 +13,25 @@
       </ul>
     </form>
   </div>
+
+
+<!-- Main page -->
   <div class="col-md-10 account-container">
     <div class="account-page">
+
       <h1 class="account-title">Welcome to Your Account!</h1>
+
       <h2 class="account-subTitle">Account Information:</h2>
       <div class="account-page-box">
         <p>Email-Address: <%= username %></p>
       </div>
+
       <h2 class="account-subTitle">Basket:</h2>
       <div class="account-page-box">
         <p>items will go here</p>
       </div>
-    </div>
 
+    </div>
   </div>
 </div>
 

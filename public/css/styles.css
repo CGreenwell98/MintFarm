@@ -385,3 +385,22 @@ h5 {
 .link, .link:visited, .link:hover, .link:active {
   color: inherit;
 }
+
+/* Basket */
+
+.account-basket-items {
+  display: flex;
+  margin-top: 100px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+ .basket-name, .basket-quantity, .basket-price {
+  flex: 1;
+}
+
+.basket-image {
+  width: 5%;
+  flex: 0.1;
+}

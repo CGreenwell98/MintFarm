@@ -62,6 +62,18 @@ const itemSchema = {
 
 const Item = mongoose.model("Item", itemSchema);
 
+// Backet
+
+const basketSchema = {
+  userId: String,
+  itemName: String,
+  price: Number,
+  bulkPrice: Number,
+  quantity: Number
+};
+
+const BasketItem = mongoose.model("Basket Item", basketSchema);
+
 // Navbar text change
 
 app.use((req,res,next) => {
@@ -87,12 +99,36 @@ app.get("/products", (req,res) => {
   })
 })
 
-app.get("/products/:itemName", (req,res) => {
+app.route("/products/:itemName")
+.get((req,res) => {
   Item.findOne({name:req.params.itemName}, (err, foundItem) => {
     if (!err) {
       res.render("product-page", {item:foundItem})
     }
   })
+})
+.post((req,res) => {
+Item.findOne({name:req.params.itemName}, (err, foundItem) => {
+  if (!err) {
+
+    const quantity = 120;
+    let itemPrice = foundItem.price;
+    if (quantity>100) {
+      itemPrice = foundItem.bulkPrice;
+    }
+
+      const basketItem = new BasketItem ({
+        userId: req.user._id,
+        itemName: foundItem.name,
+        price: itemPrice,
+        source: foundItem.source,
+        quantity: quantity
+      })
+      basketItem.save();
+      res.redirect("/products");
+
+  }
+})
 });
 
 app.route("/log-in")
@@ -138,7 +174,12 @@ app.route("/register")
 
 app.get("/account", (req,res) => {
   if (req.isAuthenticated()) {
-    res.render("account", {username: req.user.username})
+    BasketItem.find({userId:req.user._id}, (err, basketItems) =>{
+      if (!err) {
+        console.log(basketItems)
+        res.render("account", {username: req.user.username, basketItems:basketItems})
+      }
+    })
   } else {
     res.redirect("/log-in")
   }
@@ -148,6 +189,10 @@ app.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
+
+app.get("/items", (req,res) => {
+  res.render("items")
+})
 
 app.listen(3000, () => {
   console.log("Running: Port 3000")
