@@ -6,6 +6,7 @@ const ejs = require("ejs");
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
+require('dotenv').config()
 
 const app = express();
 
