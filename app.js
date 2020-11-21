@@ -68,7 +68,7 @@ const basketSchema = {
   userId: String,
   itemName: String,
   price: Number,
-  bulkPrice: Number,
+  source: String,
   quantity: Number
 };
 
@@ -110,23 +110,28 @@ app.route("/products/:itemName")
 .post((req,res) => {
 Item.findOne({name:req.params.itemName}, (err, foundItem) => {
   if (!err) {
+    if (req.isAuthenticated()) {
 
-    const quantity = 120;
-    let itemPrice = foundItem.price;
-    if (quantity>100) {
-      itemPrice = foundItem.bulkPrice;
+      const quantity = req.body.quantity;
+      let itemPrice = foundItem.price;
+      if (quantity>100) {
+        itemPrice = foundItem.bulkPrice;
+      }
+
+        const basketItem = new BasketItem ({
+          userId: req.user._id,
+          itemName: foundItem.name,
+          price: itemPrice,
+          source: foundItem.source,
+          quantity: quantity
+        });
+
+        basketItem.save();
+        res.redirect("/products");
+
+    } else {
+      res.redirect("/log-in")
     }
-
-      const basketItem = new BasketItem ({
-        userId: req.user._id,
-        itemName: foundItem.name,
-        price: itemPrice,
-        source: foundItem.source,
-        quantity: quantity
-      })
-      basketItem.save();
-      res.redirect("/products");
-
   }
 })
 });
@@ -172,11 +177,11 @@ app.route("/register")
   });
 });
 
-app.get("/account", (req,res) => {
+app.route("/account")
+.get((req,res) => {
   if (req.isAuthenticated()) {
     BasketItem.find({userId:req.user._id}, (err, basketItems) =>{
       if (!err) {
-        console.log(basketItems)
         res.render("account", {username: req.user.username, basketItems:basketItems})
       }
     })
@@ -184,15 +189,18 @@ app.get("/account", (req,res) => {
     res.redirect("/log-in")
   }
 })
+.post((req,res) => {
+  BasketItem.deleteOne({userId:req.user._id}, {itemName:req.body.basketItemName}, (err) => {
+    if (!err) {
+      res.redirect("/account#basket")
+    }
+  })
+});
 
 app.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 });
-
-app.get("/items", (req,res) => {
-  res.render("items")
-})
 
 app.listen(3000, () => {
   console.log("Running: Port 3000")

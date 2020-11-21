@@ -344,6 +344,24 @@ h5 {
   padding-top: 50px;
 }
 
+.product-page-form {
+  display: flex;
+  align-items: center;
+}
+
+.product-page-button {
+  flex:1;
+  padding-right: 12px;
+}
+
+.quantity-box {
+  flex:2;
+}
+
+.quantity {
+  width: 22%;
+}
+
 /* Account page */
 
 .account-bar {
@@ -388,19 +406,53 @@ h5 {
 
 /* Basket */
 
-.account-basket-items {
+.account-basket-items, .account-basket-table, .account-basket-bottom {
   display: flex;
-  margin-top: 100px;
   text-align: center;
   align-items: center;
   justify-content: center;
 }
 
- .basket-name, .basket-quantity, .basket-price {
-  flex: 1;
+.account-basket-items {
+  background: rgba(0,0,0,0.25);
+  padding: 5px 10px
+}
+
+.account-basket-table {
+  margin-bottom: 10px;
+}
+
+.account-basket-bottom {
+  margin-top: 10px;
+}
+
+.basket-name, .basket-price, .basket-quantity {
+  padding-top: 15px;
+}
+
+ .basket-name {
+  flex: 1.2;
+}
+
+.basket-quantity, .basket-price {
+  flex:0.5;
+}
+
+.delete-button {
+  flex:0.25;
+  color: #a20a0a;
 }
 
 .basket-image {
   width: 5%;
-  flex: 0.1;
+  flex: 0.15;
+}
+
+.basket-button {
+  margin: auto;
+  flex:0.25;
+}
+
+.basket-message {
+  text-align: center;
 }
