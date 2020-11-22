@@ -1,0 +1,108 @@
+/* Products */
+
+.product-bar {
+  background-color: #216353;
+  color: #edffea;
+  padding: 50px 20px;
+}
+
+.product-section {
+  background-color: #a8e6cf;
+  padding:50px;
+}
+
+.product-page {
+  padding: 8%;
+}
+
+.border-shadow {
+  box-shadow: 5px;
+}
+
+.product-bar-title {
+  font-family: 'Yellowtail', cursive;
+  margin-bottom: 20px;
+  font-size: 2.2rem;
+}
+
+@media only screen and (max-width: 990px) {
+  .product-page {
+    padding: 50px 0 0 0;
+  }
+}
+
+/* Cards */
+
+h5 {
+  font-size: 1rem;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border: none;
+  color: white;
+  margin: 10px;
+}
+.product-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.4);
+  }
+
+.card-anchor, .card-anchor:hover {
+  color: initial;
+}
+
+.card-anchor:hover, .link:hover {
+  text-decoration: initial;
+}
+
+  .text-muted i {
+    margin: 0 10px;
+  }
+
+/* Product-page */
+
+.item-page {
+  height: 100vh;
+  padding: 8%;
+}
+
+.wrapper {
+  height: 450px;
+  display: flex;
+  background-color: #216353;
+  color: #edffea;
+}
+
+.product-img {
+  flex: 1;
+}
+
+.product-info {
+  padding: 30px;
+  height: 450px;
+  width: 600px;
+  flex: 1;
+}
+
+.product-page-header {
+  padding-top: 50px;
+}
+
+.product-page-form {
+  display: flex;
+  align-items: center;
+}
+
+.product-page-button {
+  flex:1;
+  padding-right: 12px;
+}
+
+.quantity-box {
+  flex:2;
+}
+
+.quantity {
+  width: 22%;
+}

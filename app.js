@@ -80,11 +80,28 @@ const BasketItem = mongoose.model("Basket Item", basketSchema);
 app.use((req,res,next) => {
   if (req.isAuthenticated()) {
     res.locals.account = "Account";
-  } else if (!req.isAuthenticated()) {
+  } else {
     res.locals.account = "Sign In";
   }
   next();
-})
+});
+
+//  Navbar basket item number
+
+app.use((req,res,next) => {
+  if (req.isAuthenticated()) {
+    BasketItem.find({userId:req.user._id}, (err, basketItems) =>{
+      if (!err) {
+        let count = 0;
+        forEach(basketItems => {
+          count = count + 1;
+        });
+        console.log(count);
+      }
+    });
+  }
+  next();
+});
 
 // Routes
 
@@ -150,11 +167,10 @@ app.route("/log-in")
 
   req.login(user, (err) => {
     if (err) {
-      console.log(err);
-      res.redirect("/log-in")
+      res.redirect("/log-in");
     } else {
-      passport.authenticate("local")(req, res, () => {
-        res.redirect("/account");
+      passport.authenticate("local")(req, res, (err) => {
+        res.redirect("/account")
       });
     }
   });
@@ -196,6 +212,14 @@ app.route("/account")
       res.redirect("/account#basket")
     }
   })
+});
+
+app.get("/account/deleteAll", (req,res) => {
+  BasketItem.deleteMany({userId:req.user._id}, (err) => {
+    if (!err) {
+      res.redirect("/account#basket")
+    }
+  });
 });
 
 app.get('/logout', (req, res) => {

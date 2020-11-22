@@ -1,0 +1,170 @@
+/* Title */
+
+.title-container {
+  height: 600px;
+  width: 100%;
+  margin: 0;
+}
+
+.centre {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-left {
+  background-color: #216353;
+  padding-left: 10%;
+  padding-right: 5%;
+  line-height: 1.7rem;
+}
+
+.title-right {
+  background-color: #75daad;
+}
+
+.title-box {
+  color: #edffea;
+  margin-top: 50px;
+}
+
+.title-button {
+  margin-top: 1rem;
+}
+
+.title-icon {
+  color: #216353;
+  font-size: 6rem;
+}
+
+.circle {
+  margin-top: 50px;
+  border-radius: 100%;
+  background-color: #edffea;
+  width: 300px;
+  height: 300px;
+}
+
+@media only screen and (max-width: 990px) {
+  .title-right{
+    display: none;
+  }
+}
+
+/* Qualities */
+
+#qualities {
+  padding: 120px 10%;
+  color: #434e52;
+}
+
+.qual-box {
+  text-align: center;
+  font-weight: 300;
+  padding: 40px;
+}
+
+.qual-item {
+  font-size: 1.7rem;
+  padding-bottom: 1rem;
+}
+
+/* Testimonial */
+
+.test-box {
+  background-color: #216353;
+}
+
+.fabio {
+  width: 500px;
+  float: left;
+  margin-right: 50px;
+}
+
+.fabio-tesitmonial, .product-review {
+  color: #edffea;
+  padding: 50px;
+}
+
+.test-title {
+  float: right;
+}
+
+.test-header {
+  padding: 100px 0 4% 0;
+}
+
+.test-info {
+  float: right;
+  opacity: 0.8;
+  padding-top: 2%;
+  padding-right: 1%;
+  font-weight: 300;
+  font-size: 0.8rem;
+}
+
+@media only screen and (max-width: 990px) {
+  .fabio, .ice-cream {
+    display: none;
+  }
+  .test-box, .product-box {
+    height: 425px;
+  }
+}
+
+/* Best Product */
+
+.product-box {
+  background-color: #75daad;
+  margin-top: 150px;
+  margin-right: 0;
+}
+
+.ice-cream {
+  width: 500px;
+  float: right;
+  margin-left: 50px;
+}
+
+.product-title {
+  float: left;
+}
+
+.product-header {
+  padding: 100px 0 4% 0;
+}
+
+.button-product {
+  background-color: #216353;
+  margin-top: 2%;
+}
+
+@media only screen and (max-width: 990px) {
+  .product-box,.test-box {
+    height:500px;
+  }
+}
+
+/* Contact info */
+
+#contact-info {
+    background-color: #313131;
+    padding: 50px 10%;
+    margin-top: 150px;
+    color:  #999;
+}
+
+#map {
+  margin-top: 30px;
+  height: 400px;
+  width: 600px;
+}
+
+.location {
+
+}
+
+.vl {
+  border-left: 1px solid #999;
+  height: 95%;
+}
