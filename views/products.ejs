@@ -8,6 +8,9 @@
       <a href="/log-in" class="button-anchor"><button type="button" class="btn btn-dark login-button">Sign In</button></a>
       <a href="/account#basket" class="button-anchor"><button type="button" class="btn btn-dark login-button"><i class="fas fa-shopping-basket"></i> Basket</button></a>
     </div>
+    <form action="/products" method="post">
+      <input type="checkbox" name="checkbox" value="descending" onchange="this.form.submit()"
+    </form>
   </div>
 
   <div class="col-md-9 product-section">

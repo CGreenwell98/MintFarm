@@ -65,7 +65,7 @@
             <p class="basket-name"></p>
             <p class="basket-quantity"></p>
             <p class="basket-price">Total Price:</p>
-            <p class="basket-price">£<%= total %></p>
+            <p class="basket-price">£<%= total.toFixed(2) %></p>
             <a href="/account/deleteAll"><button type="submit" class="btn btn-danger basket-button"><small>Delete All</small></button></a>
           </div>
         </div>
@@ -75,8 +75,14 @@
   </div>
 </div>
 
-<script type="text/javascript">
+<script defer type="text/javascript">
   const total = <%= total %>;
+  if (total==0) {
+    $(".account-basket-bottom").hide();
+    $(".account-basket-table").hide();
+  } else {
+    $(".basket-message").hide();
+  }
 </script>
 
 <%- include("partials/noFooter"); -%>

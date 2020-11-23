@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose")
 const ejs = require("ejs");
+const sort = require(__dirname + "/sorting.js")
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
@@ -22,7 +23,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb://localhost:27017/MintFarmDB", {
+mongoose.connect("mongodb+srv://admin-chris:"+process.env.PASSWORD_DB+"@cluster0.jxlvl.mongodb.net/MintFarmDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -88,34 +89,60 @@ app.use((req,res,next) => {
 
 //  Navbar basket item number
 
-app.use((req,res,next) => {
-  if (req.isAuthenticated()) {
-    BasketItem.find({userId:req.user._id}, (err, basketItems) =>{
-      if (!err) {
-        let count = 0;
-        forEach(basketItems => {
-          count = count + 1;
-        });
-        console.log(count);
-      }
-    });
-  }
-  next();
-});
+// app.use((req,res,next) => {
+//   if (req.isAuthenticated()) {
+//     BasketItem.find({userId:req.user._id}, (err, basketItems) =>{
+//       if (!err) {
+//         let count = 0;
+//         basketItems.forEach( item => {
+//           count = count + 1;
+//         });
+//         res.locals.basketItemNumber = count.toString();
+//       }
+//     });
+//   } else {
+//     res.locals.basketItemNumber = "0";
+//   }
+//   next();
+// });
 
 // Routes
 
 app.get("/", (req, res) => {
-  res.render("index")
+  const googleMapsApi = process.env.API_SRC
+  res.render("index", {googleMapsApi:googleMapsApi})
 });
 
-app.get("/products", (req,res) => {
+// Product pages
+
+app.route("/products")
+.get((req,res) => {
   Item.find((err, foundItems) => {
     if (!err) {
       res.render("products", {foundItems:foundItems})
     }
   })
 })
+.post((req,res) => {
+
+  let itemArray = [];
+  let foundItems = [];
+  Item.find((err, items) => {
+    if (!err) {
+      items.forEach(item => {
+        itemArray.push(item.price);
+      })
+    }
+  });
+  const sortedArray = sort.sortDescending(itemArray);
+  sortedArray.forEach(price => {
+    Item.findOne({price:price}, (err, foundItem) => {
+      foundItems.push(foundItem);
+    })
+  });
+  res.render("products", {foundItems:foundItems})
+
+});
 
 app.route("/products/:itemName")
 .get((req,res) => {
@@ -153,6 +180,8 @@ Item.findOne({name:req.params.itemName}, (err, foundItem) => {
   }
 })
 });
+
+// Sign-in + Register
 
 app.route("/log-in")
 .get((req,res) => {
@@ -193,6 +222,8 @@ app.route("/register")
   }
   });
 });
+
+// Account page + Basket
 
 app.route("/account")
 .get((req,res) => {
