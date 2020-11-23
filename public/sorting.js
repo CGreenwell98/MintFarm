@@ -1,21 +1,24 @@
+exports.items = (arr, sortType) => {
 
-exports.sortDescending = (arr) => {
-  const sortedArray = bubbleSort(arr);
-  return sortedArray
-}
+  switch (sortType) {
+    case "priceAscending":
+      return arr.sort((a, b) => a.price - b.price);
+      break;
+    case "priceDescending":
+      return arr.sort((a, b) => b.price - a.price);
+      break;
+    case "nameAscending":
+      if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+      if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+      return 0;
+      break;
+    case "nameDescending":
+      if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
+      if (a.name.toLowerCase() < b.name.toLowerCase()) return 1;
+      return 0;
+      break;
+    default:
+      console.log("sorting method broken");
+  }
 
-// bubblesort algo
-
-function bubbleSort(arr){
-   var len = arr.length;
-   for (var i = len-1; i>=0; i--){
-     for(var j = 1; j<=i; j++){
-       if(arr[j-1]>arr[j]){
-           var temp = arr[j-1];
-           arr[j-1] = arr[j];
-           arr[j] = temp;
-        }
-     }
-   }
-   return arr;
 }

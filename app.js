@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose")
 const ejs = require("ejs");
-const sort = require(__dirname + "/sorting.js")
+const sort = require(__dirname + "/public/sorting.js")
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
@@ -124,23 +124,13 @@ app.route("/products")
   })
 })
 .post((req,res) => {
-
-  let itemArray = [];
-  let foundItems = [];
   Item.find((err, items) => {
     if (!err) {
-      items.forEach(item => {
-        itemArray.push(item.price);
-      })
+      const sortType = req.body.checkbox
+      const sortedArray = sort.items(items,sortType);
+      res.render("products", {foundItems:sortedArray})
     }
-  });
-  const sortedArray = sort.sortDescending(itemArray);
-  sortedArray.forEach(price => {
-    Item.findOne({price:price}, (err, foundItem) => {
-      foundItems.push(foundItem);
-    })
-  });
-  res.render("products", {foundItems:foundItems})
+    });
 
 });
 
