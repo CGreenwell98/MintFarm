@@ -32,7 +32,7 @@
     </div>
     <div class="col-md-4 qual-box">
         <i class="fas fa-boxes qual-item"></i>
-        <p>Reduced prices for ordering 100 or more items in bulk.</p>
+        <p>Reduced prices for ordering more than 100 items in bulk.</p>
     </div>
   </div>
 </section>
@@ -69,17 +69,32 @@
 
 <section id="contact-info">
   <div class="row">
-    <div class="col-lg-6 location">
+    <div class="col-lg-6 contact-invisible">
       <h4>Location:</h4>
       <div id="map"></div>
     </div>
-    <div class="col-lg-1 centre">
+    <div class="col-lg-1 centre contact-invisible">
       <div class="vl"></div>
     </div>
     <div class="col-lg-5">
+      <h4>Address:</h4>
+      <ul class="info">
+        <li>46 Mint Berry Lane</li>
+        <li>Wembly Park Retail</li>
+        <li>Wembley, London</li>
+        <li>Middlesex</li>
+        <li>HA9 0TF</li>
+      </ul>
       <h4>Contact:</h4>
-      <ul>
-        <li>Address: 46 Mint Berry Lane</li>
+      <ul class="info">
+        <li>Email: MintFarm@gmail.co.uk</li>
+        <li>Telephone no.: 0208 123 4567</li>
+        <li>Fax: 0208 890 1234</li>
+      </ul>
+      <h4>Opening Times:</h4>
+      <ul class="info">
+        <li>Mon - Fri: 8:00-18:00</li>
+        <li>Weekends: 10:00-15:00</li>
       </ul>
     </div>
   </div>
@@ -92,11 +107,11 @@
 function initMap() {
   const options = {
     zoom:10,
-    center:{lat:51.5074, lng:-0.1278}
+    center:{lat:51.51, lng:-0.13}
   }
   const map = new google.maps.Map(document.getElementById("map"), options);
   const marker = new google.maps.Marker({
-    position:{lat:51.5074,lng:-0.1278},
+    position:{lat:51.559313,lng:-0.276910},
     map:map
   });
 }

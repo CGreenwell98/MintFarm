@@ -8,14 +8,18 @@ exports.items = (arr, sortType) => {
       return arr.sort((a, b) => b.price - a.price);
       break;
     case "nameAscending":
+    return arr.sort((a,b) => {
       if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
       if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
       return 0;
+    });
       break;
     case "nameDescending":
+    return arr.sort((a,b) => {
       if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
       if (a.name.toLowerCase() < b.name.toLowerCase()) return 1;
       return 0;
+    });
       break;
     default:
       console.log("sorting method broken");

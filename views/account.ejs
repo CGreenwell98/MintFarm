@@ -3,26 +3,26 @@
 <div class="row">
 
   <!-- Left Nav-bar -->
-  <div class="col-md-2 account-bar">
-    <form action="/account" method="post">
+  <div class="col-lg-2 account-bar">
       <ul class="account-list">
         <li><a class="link" href="/">Home</a></li>
         <li>Account Info</li>
         <li><a class="link" href="#basket">Basket</a></li>
         <li><a class="link" href="/logout">Log-Out</a></li>
       </ul>
-    </form>
   </div>
 
 
   <!-- Main page -->
-  <div class="col-md-10 account-container">
+  <div class="col-lg-10 account-container">
     <div class="account-page">
 
       <h1 class="account-title">Welcome to Your Account!</h1>
 
       <h2 class="account-subTitle">Account Information:</h2>
       <div class="account-page-box">
+        <p>Name: <%= name %></p>
+        <p>Address: <%= address %></p>
         <p>Email-Address: <%= username %></p>
       </div>
 
@@ -75,14 +75,10 @@
   </div>
 </div>
 
-<script defer type="text/javascript">
+<script>
   const total = <%= total %>;
-  if (total==0) {
-    $(".account-basket-bottom").hide();
-    $(".account-basket-table").hide();
-  } else {
-    $(".basket-message").hide();
-  }
 </script>
+
+<script src="/javascript/basket.js" charset="utf-8" defer></script>
 
 <%- include("partials/noFooter"); -%>

@@ -6,11 +6,10 @@
 }
 
 .login-box {
-  margin-top: 25px;
+  margin-top: 40px;
   background-color: #313131;
   color: #edffea;
-  width: 450px;
-  height: 450px;
+  padding: 70px;
   border-radius: 10px;
 }
 
@@ -79,6 +78,12 @@
 
 .link, .link:visited, .link:hover, .link:active {
   color: inherit;
+}
+
+@media only screen and (max-width: 990px) {
+  .account-bar {
+    display: none;
+  }
 }
 
 /* Basket */

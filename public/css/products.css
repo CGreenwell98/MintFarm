@@ -19,11 +19,19 @@
   box-shadow: 5px;
 }
 
+.product-bar-title, .product-bar-subTitle {
+  margin-bottom: 20px;
+}
+
 .product-bar-title {
   font-family: 'Yellowtail', cursive;
-  margin-bottom: 20px;
   font-size: 2.2rem;
 }
+
+.product-bar-subTitle {
+  font-size: 1.4rem;
+}
+
 
 @media only screen and (max-width: 990px) {
   .product-page {

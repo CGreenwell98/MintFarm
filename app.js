@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose")
 const ejs = require("ejs");
-const sort = require(__dirname + "/public/sorting.js")
+const sort = require(__dirname + "/public/javascript/sorting.js")
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
@@ -32,6 +32,8 @@ mongoose.set("useCreateIndex", true);
 // Users
 
 const userSchema = new mongoose.Schema({
+  name:String,
+  address:String,
   email: String,
   password: String
 });
@@ -201,7 +203,12 @@ app.route("/register")
   res.render("register")
 })
 .post((req,res) => {
-  User.register({username:req.body.username}, req.body.password, (err, user) => {
+  const newUser = {
+    name:req.body.name,
+    address:req.body.address,
+    username:req.body.username
+  }
+  User.register(newUser, req.body.password, (err, user) => {
     if (err) {
       console.log(err);
       res.redirect("/register");
@@ -220,7 +227,7 @@ app.route("/account")
   if (req.isAuthenticated()) {
     BasketItem.find({userId:req.user._id}, (err, basketItems) =>{
       if (!err) {
-        res.render("account", {username: req.user.username, basketItems:basketItems})
+        res.render("account", {username: req.user.username, name:req.user.name, address:req.user.address, basketItems:basketItems})
       }
     })
   } else {
