@@ -1,4 +1,3 @@
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose")
@@ -13,7 +12,9 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(express.static("public"));
 app.use(session({
   secret: "MintFarm1998",
@@ -23,7 +24,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb+srv://admin-chris:"+process.env.PASSWORD_DB+"@cluster0.jxlvl.mongodb.net/MintFarmDB", {
+mongoose.connect("mongodb+srv://admin-chris:" + process.env.PASSWORD_DB + "@cluster0.jxlvl.mongodb.net/MintFarmDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -32,8 +33,8 @@ mongoose.set("useCreateIndex", true);
 // Users
 
 const userSchema = new mongoose.Schema({
-  name:String,
-  address:String,
+  name: String,
+  address: String,
   email: String,
   password: String
 });
@@ -80,7 +81,7 @@ const BasketItem = mongoose.model("Basket Item", basketSchema);
 
 // Navbar text change
 
-app.use((req,res,next) => {
+app.use((req, res, next) => {
   if (req.isAuthenticated()) {
     res.locals.account = "Account";
   } else {
@@ -112,138 +113,152 @@ app.use((req,res,next) => {
 
 app.get("/", (req, res) => {
   const googleMapsApi = process.env.API_SRC
-  res.render("index", {googleMapsApi:googleMapsApi})
+  res.render("index", {googleMapsApi: googleMapsApi})
 });
 
 // Product pages
 
 app.route("/products")
-.get((req,res) => {
-  Item.find((err, foundItems) => {
-    if (!err) {
-      res.render("products", {foundItems:foundItems})
-    }
+  .get((req, res) => {
+    Item.find((err, foundItems) => {
+      if (!err) {
+        res.render("products", {foundItems: foundItems})
+      }
+    })
   })
-})
-.post((req,res) => {
-  Item.find((err, items) => {
-    if (!err) {
-      const sortType = req.body.checkbox
-      const sortedArray = sort.items(items,sortType);
-      res.render("products", {foundItems:sortedArray})
-    }
+  // Item sorting:
+  .post((req, res) => {
+    Item.find((err, items) => {
+      if (!err) {
+        const sortType = req.body.checkbox
+        const sortedArray = sort.items(items, sortType);
+        res.render("products", {foundItems: sortedArray});
+      }
     });
 
-});
+  });
 
 app.route("/products/:itemName")
-.get((req,res) => {
-  Item.findOne({name:req.params.itemName}, (err, foundItem) => {
-    if (!err) {
-      res.render("product-page", {item:foundItem})
-    }
-  })
-})
-.post((req,res) => {
-Item.findOne({name:req.params.itemName}, (err, foundItem) => {
-  if (!err) {
-    if (req.isAuthenticated()) {
-
-      const quantity = req.body.quantity;
-      let itemPrice = foundItem.price;
-      if (quantity>100) {
-        itemPrice = foundItem.bulkPrice;
+  .get((req, res) => {
+    Item.findOne({name: req.params.itemName}, (err, foundItem) => {
+      if (!err) {
+        res.render("product-page", {item: foundItem});
       }
+    })
+  })
+  // Add item to basket:
+  .post((req, res) => {
+    Item.findOne({name: req.params.itemName}, (err, foundItem) => {
+      if (!err) {
+        if (req.isAuthenticated()) {
 
-        const basketItem = new BasketItem ({
-          userId: req.user._id,
-          itemName: foundItem.name,
-          price: itemPrice,
-          source: foundItem.source,
-          quantity: quantity
-        });
+          // Checks if item is already in basket:
+          BasketItem.findOne({userId: req.user._id, itemName: req.params.itemName}, (err, basketItem) => {
+            if (!err) {
+              if (basketItem) {
+                res.redirect("/account#basket")
+              } else {
 
-        basketItem.save();
-        res.redirect("/products");
+                const quantity = req.body.quantity;
+                let itemPrice = foundItem.price;
+                if (quantity > 100) {
+                  itemPrice = foundItem.bulkPrice;
+                }
 
-    } else {
-      res.redirect("/log-in")
-    }
-  }
-})
-});
+                const basketItem = new BasketItem({
+                  userId: req.user._id,
+                  itemName: foundItem.name,
+                  price: itemPrice,
+                  source: foundItem.source,
+                  quantity: quantity
+                });
+
+                basketItem.save();
+                res.redirect("/products");
+
+              }
+            }
+          });
+
+        } else {
+          res.redirect("/log-in")
+        }
+      }
+    })
+  });
 
 // Sign-in + Register
 
 app.route("/log-in")
-.get((req,res) => {
-  res.render("login")
-})
-.post((req,res) => {
+  .get((req, res) => {
+    res.render("login")
+  })
+  .post((req, res) => {
 
-  const user = new User({
-    username:req.body.username,
-    password:req.body.password
+    const user = new User({
+      username: req.body.username,
+      password: req.body.password
+    });
+
+    req.login(user, (err) => {
+      if (err) {
+        res.redirect("/log-in");
+      } else {
+        passport.authenticate("local")(req, res, (err) => {
+          res.redirect("/account")
+        });
+      }
+    });
+
   });
-
-  req.login(user, (err) => {
-    if (err) {
-      res.redirect("/log-in");
-    } else {
-      passport.authenticate("local")(req, res, (err) => {
-        res.redirect("/account")
-      });
-    }
-  });
-
-});
 
 app.route("/register")
-.get((req,res) => {
-  res.render("register")
-})
-.post((req,res) => {
-  const newUser = {
-    name:req.body.name,
-    address:req.body.address,
-    username:req.body.username
-  }
-  User.register(newUser, req.body.password, (err, user) => {
-    if (err) {
-      console.log(err);
-      res.redirect("/register");
-    } else {
-      passport.authenticate("local")(req, res, () => {
-        res.redirect("/account");
-      });
-  }
+  .get((req, res) => {
+    res.render("register")
+  })
+  .post((req, res) => {
+    const newUser = {
+      name: req.body.name,
+      address: req.body.address,
+      username: req.body.username
+    }
+    User.register(newUser, req.body.password, (err, user) => {
+      if (err) {
+        console.log(err);
+        res.redirect("/register");
+      } else {
+        passport.authenticate("local")(req, res, () => {
+          res.redirect("/account");
+        });
+      }
+    });
   });
-});
 
 // Account page + Basket
 
 app.route("/account")
-.get((req,res) => {
-  if (req.isAuthenticated()) {
-    BasketItem.find({userId:req.user._id}, (err, basketItems) =>{
-      if (!err) {
-        res.render("account", {username: req.user.username, name:req.user.name, address:req.user.address, basketItems:basketItems})
-      }
-    })
-  } else {
-    res.redirect("/log-in")
-  }
-})
-.post((req,res) => {
-  BasketItem.deleteOne({userId:req.user._id}, {itemName:req.body.basketItemName}, (err) => {
-    if (!err) {
-      res.redirect("/account#basket")
+  .get((req, res) => {
+    if (req.isAuthenticated()) {
+      BasketItem.find({userId: req.user._id}, (err, basketItems) => {
+        if (!err) {
+          res.render("account", {username: req.user.username, name: req.user.name, address: req.user.address, basketItems: basketItems});
+        }
+      })
+    } else {
+      res.redirect("/log-in")
     }
   })
-});
+  .post((req, res) => {
+    console.log(req.body.basketItemName);
+    BasketItem.deleteOne({userId: req.user._id, itemName: req.body.basketItemName}, (err) => {
+      if (!err) {
+        res.redirect("/account#basket")
+      }
+    });
+  });
 
-app.get("/account/deleteAll", (req,res) => {
-  BasketItem.deleteMany({userId:req.user._id}, (err) => {
+app.get("/account/deleteAll", (req, res) => {
+  BasketItem.deleteMany({userId: req.user._id}, (err) => {
     if (!err) {
       res.redirect("/account#basket")
     }
@@ -257,4 +272,4 @@ app.get('/logout', (req, res) => {
 
 app.listen(3000, () => {
   console.log("Running: Port 3000")
-})
+});

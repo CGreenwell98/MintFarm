@@ -24,6 +24,7 @@
         <p>Name: <%= name %></p>
         <p>Address: <%= address %></p>
         <p>Email-Address: <%= username %></p>
+        <button class="btn btn-dark logout-button"><a href="/logout" class="link">Log Out</a></button>
       </div>
 
       <section id="basket">
@@ -46,16 +47,17 @@
           <!-- Basket Items -->
           <% let total=0; %>
           <% basketItems.forEach(item => { %>
-          <form action="/account" method="post">
             <div class="account-basket-items">
-              <img class="basket-image" src="<%= item.source %>" alt="<%= item.ItemName %>.img">
-              <p class="basket-name" name="basketItemName"><%= item.itemName %></p>
+              <img class="basket-image" src="<%= item.source %>" alt="<%= item.itemName %>.img">
+              <p class="basket-name"><%= item.itemName %></p>
               <p class="basket-quantity"><%= item.quantity %></p>
               <p class="basket-price">£<%= item.price %></p>
               <p class="basket-price">£<%= itemCost=(item.price*item.quantity).toFixed(2) %></p>
+              <form action="/account" method="post">
               <button type="submit" class="btn delete-button">X</button>
+              <input type="hidden" name="basketItemName" value="<%= item.itemName %>" >
+              </form>
             </div>
-          </form>
           <% total=total+Number(itemCost); %>
           <% }) %>
 
