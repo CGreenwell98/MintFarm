@@ -6,6 +6,10 @@
   padding: 50px 20px;
 }
 
+.product-bar p {
+  font-size: 0.9rem;
+}
+
 .product-section {
   background-color: #a8e6cf;
   padding:50px;
@@ -25,7 +29,7 @@
 
 .product-bar-title {
   font-family: 'Yellowtail', cursive;
-  font-size: 2.2rem;
+  font-size: 2.3rem;
 }
 
 .product-bar-subTitle {

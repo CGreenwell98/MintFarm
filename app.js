@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose")
 const ejs = require("ejs");
-const sort = require(__dirname + "/public/javascript/sorting.js")
+const sort = require(__dirname + "/public/javascript/sorting.js");
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
@@ -67,7 +67,7 @@ const itemSchema = {
 
 const Item = mongoose.model("Item", itemSchema);
 
-// Backet
+// Basket
 
 const basketSchema = {
   userId: String,
@@ -101,6 +101,7 @@ app.use((req, res, next) => {
 //           count = count + 1;
 //         });
 //         res.locals.basketItemNumber = count.toString();
+//         console.log(res.locals.basketItemNumber);
 //       }
 //     });
 //   } else {
@@ -193,22 +194,21 @@ app.route("/log-in")
   .get((req, res) => {
     res.render("login")
   })
-  .post((req, res) => {
+  .post((req, res, next) => {
 
     const user = new User({
       username: req.body.username,
       password: req.body.password
     });
 
-    req.login(user, (err) => {
-      if (err) {
-        res.redirect("/log-in");
-      } else {
-        passport.authenticate("local")(req, res, (err) => {
-          res.redirect("/account")
-        });
-      }
+    passport.authenticate('local', function(err, user) {
+    if (err) { return next(err); }
+    if (!user) { return res.redirect('/log-in'); }
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      return res.redirect('/account');
     });
+    })(req, res, next);
 
   });
 
@@ -249,7 +249,6 @@ app.route("/account")
     }
   })
   .post((req, res) => {
-    console.log(req.body.basketItemName);
     BasketItem.deleteOne({userId: req.user._id, itemName: req.body.basketItemName}, (err) => {
       if (!err) {
         res.redirect("/account#basket")
