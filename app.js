@@ -274,7 +274,3 @@ if (port == null || port == "") {
   port = 3000;
 }
 app.listen(port);
-
-app.listen(port, () => {
-  console.log("Running: Port 3000")
-});
