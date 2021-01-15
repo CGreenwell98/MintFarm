@@ -1,22 +1,19 @@
 <%- include("partials/header"); -%>
 
 <div class="row">
-
   <!-- Left Nav-bar -->
   <div class="col-lg-2 account-bar">
-      <ul class="account-list">
-        <li><a class="link" href="/">Home</a></li>
-        <li><a class="link" href="/products">Products</a></li>
-        <li><a class="link" href="#basket">Basket</a></li>
-        <li><a class="link" href="/logout">Log-Out</a></li>
-      </ul>
+    <ul class="account-list">
+      <li><a class="link" href="/">Home</a></li>
+      <li><a class="link" href="/products">Products</a></li>
+      <li><a class="link" href="#basket">Basket</a></li>
+      <li><a class="link" href="/logout">Log-Out</a></li>
+    </ul>
   </div>
-
 
   <!-- Main page -->
   <div class="col-lg-10 account-container">
     <div class="account-page">
-
       <h1 class="account-title">Welcome to Your Account!</h1>
 
       <h2 class="account-subTitle">Account Information:</h2>
@@ -24,16 +21,16 @@
         <p>Name: <%= name %></p>
         <p>Address: <%= address %></p>
         <p>Email-Address: <%= username %></p>
-        <button class="btn btn-dark logout-button"><a href="/logout" class="link">Log Out</a></button>
+        <button class="btn btn-dark logout-button">
+          <a href="/logout" class="link">Log Out</a>
+        </button>
       </div>
 
       <section id="basket">
-
         <!-- Basket Title-->
         <h2 class="account-subTitle">Basket:</h2>
         <div class="account-page-box">
-
-          <p class="basket-message">Your Basket is Currently Empty</p>
+          <p class="basket-message hidden">Your Basket is Currently Empty</p>
 
           <div class="account-basket-table">
             <p class="basket-image"></p>
@@ -45,21 +42,6 @@
           </div>
 
           <!-- Basket Items -->
-          <% let total=0; %>
-          <% basketItems.forEach(item => { %>
-            <div class="account-basket-items">
-              <img class="basket-image" src="<%= item.source %>" alt="<%= item.itemName %>.img">
-              <p class="basket-name"><%= item.itemName %></p>
-              <p class="basket-quantity"><%= item.quantity %></p>
-              <p class="basket-price">£<%= item.price %></p>
-              <p class="basket-price">£<%= itemCost=(item.price*item.quantity).toFixed(2) %></p>
-              <form action="/account" method="post">
-              <button type="submit" class="btn delete-button">X</button>
-              <input type="hidden" name="basketItemName" value="<%= item.itemName %>" >
-              </form>
-            </div>
-          <% total=total+Number(itemCost); %>
-          <% }) %>
 
           <!-- Basket Bottom -->
           <div class="account-basket-bottom">
@@ -67,19 +49,19 @@
             <p class="basket-name"></p>
             <p class="basket-quantity"></p>
             <p class="basket-price">Total Price:</p>
-            <p class="basket-price">£<%= total.toFixed(2) %></p>
-            <a href="/account/deleteAll"><button type="submit" class="btn btn-danger basket-button"><small>Delete All</small></button></a>
+            <p class="basket-price basket-total"></p>
+            <button
+              type="button"
+              class="btn btn-danger basket-button delete-all-btn"
+            >
+              <small>Delete All</small>
+            </button>
           </div>
         </div>
       </section>
-
     </div>
   </div>
 </div>
-
-<script>
-  const total = <%= total %>;
-</script>
 
 <script src="/javascript/basket.js" charset="utf-8" defer></script>
 

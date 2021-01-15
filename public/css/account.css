@@ -19,19 +19,18 @@
 }
 
 .login-title {
-  font-family: 'Yellowtail', cursive;
+  font-family: "Yellowtail", cursive;
   font-size: 3rem;
   margin-bottom: 2rem;
 }
 
 .button-anchor {
-    flex: 1;
+  flex: 1;
 }
 
 .login-button {
   margin-top: 1rem;
   width: 80%;
-
 }
 
 .login-buttons {
@@ -54,7 +53,7 @@
 }
 
 .account-title {
-  font-family: 'Yellowtail', cursive;
+  font-family: "Yellowtail", cursive;
   margin-bottom: 2rem;
 }
 
@@ -68,11 +67,14 @@
 }
 
 .account-page-box {
-  background: rgba(0,0,0,0.12);
+  background: rgba(0, 0, 0, 0.12);
   padding: 4%;
 }
 
-.link, .link:visited, .link:hover, .link:active {
+.link,
+.link:visited,
+.link:hover,
+.link:active {
   color: inherit;
 }
 
@@ -81,7 +83,8 @@
 }
 
 @media only screen and (max-width: 990px) {
-  .account-bar, .basket-image {
+  .account-bar,
+  .basket-image {
     display: none;
   }
   .logout-button {
@@ -91,7 +94,9 @@
 
 /* Basket */
 
-.account-basket-items, .account-basket-table, .account-basket-bottom {
+.account-basket-items,
+.account-basket-table,
+.account-basket-bottom {
   display: flex;
   text-align: center;
   align-items: center;
@@ -99,8 +104,8 @@
 }
 
 .account-basket-items {
-  background: rgba(0,0,0,0.25);
-  padding: 5px 10px
+  background: rgba(0, 0, 0, 0.25);
+  padding: 5px 10px;
 }
 
 .account-basket-table {
@@ -111,20 +116,23 @@
   margin-top: 10px;
 }
 
-.basket-name, .basket-price, .basket-quantity {
+.basket-name,
+.basket-price,
+.basket-quantity {
   padding-top: 15px;
 }
 
- .basket-name {
+.basket-name {
   flex: 1.2;
 }
 
-.basket-quantity, .basket-price {
-  flex:0.5;
+.basket-quantity,
+.basket-price {
+  flex: 0.5;
 }
 
 .delete-button {
-  flex:0.2;
+  flex: 0.2;
   color: #a20a0a;
 }
 
@@ -135,9 +143,15 @@
 
 .basket-button {
   margin: auto;
-  flex:0.2;
+  flex: 0.2;
 }
 
 .basket-message {
   text-align: center;
+}
+
+/* Hidden */
+
+.hidden {
+  display: none;
 }

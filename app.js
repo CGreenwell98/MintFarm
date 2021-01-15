@@ -1,33 +1,43 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const ejs = require("ejs");
 const sort = require(__dirname + "/public/javascript/sorting.js");
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
-require('dotenv').config()
+require("dotenv").config();
 
 const app = express();
 
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  }),
+  express.json()
+);
 app.use(express.static("public"));
-app.use(session({
-  secret: "MintFarm1998",
-  resave: false,
-  saveUninitialized: false
-}));
+app.use(
+  session({
+    secret: "MintFarm1998",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb+srv://admin-chris:" + process.env.PASSWORD_DB + "@cluster0.jxlvl.mongodb.net/MintFarmDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+mongoose.connect(
+  "mongodb+srv://admin-chris:" +
+    process.env.PASSWORD_DB +
+    "@cluster0.jxlvl.mongodb.net/MintFarmDB",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 mongoose.set("useCreateIndex", true);
 
 // Users
@@ -36,7 +46,7 @@ const userSchema = new mongoose.Schema({
   name: String,
   address: String,
   email: String,
-  password: String
+  password: String,
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -45,12 +55,12 @@ const User = new mongoose.model("User", userSchema);
 
 passport.use(User.createStrategy());
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
   done(null, user.id);
 });
 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
+passport.deserializeUser(function (id, done) {
+  User.findById(id, function (err, user) {
     done(err, user);
   });
 });
@@ -62,7 +72,7 @@ const itemSchema = {
   price: Number,
   bulkPrice: Number,
   desc: String,
-  source: String
+  source: String,
 };
 
 const Item = mongoose.model("Item", itemSchema);
@@ -74,7 +84,7 @@ const basketSchema = {
   itemName: String,
   price: Number,
   source: String,
-  quantity: Number
+  quantity: Number,
 };
 
 const BasketItem = mongoose.model("Basket Item", basketSchema);
@@ -113,115 +123,121 @@ app.use((req, res, next) => {
 // Routes
 
 app.get("/", (req, res) => {
-  const googleMapsApi = process.env.API_SRC
-  res.render("index", {googleMapsApi: googleMapsApi})
+  const googleMapsApi = process.env.API_SRC;
+  res.render("index", { googleMapsApi: googleMapsApi });
 });
 
 // Product pages
 
-app.route("/products")
+app
+  .route("/products")
   .get((req, res) => {
     Item.find((err, foundItems) => {
       if (!err) {
-        res.render("products", {foundItems: foundItems})
+        res.render("products", { foundItems: foundItems });
       }
-    })
+    });
   })
   // Item sorting:
   .post((req, res) => {
     Item.find((err, items) => {
       if (!err) {
-        const sortType = req.body.checkbox
+        const sortType = req.body.checkbox;
         const sortedArray = sort.items(items, sortType);
-        res.render("products", {foundItems: sortedArray});
+        res.render("products", { foundItems: sortedArray });
       }
     });
-
   });
 
-app.route("/products/:itemName")
+app
+  .route("/products/:itemName")
   .get((req, res) => {
-    Item.findOne({name: req.params.itemName}, (err, foundItem) => {
+    Item.findOne({ name: req.params.itemName }, (err, foundItem) => {
       if (!err) {
-        res.render("product-page", {item: foundItem});
+        res.render("product-page", { item: foundItem });
       }
-    })
+    });
   })
   // Add item to basket:
   .post((req, res) => {
-    Item.findOne({name: req.params.itemName}, (err, foundItem) => {
+    Item.findOne({ name: req.params.itemName }, (err, foundItem) => {
       if (!err) {
         if (req.isAuthenticated()) {
-
           // Checks if item is already in basket:
-          BasketItem.findOne({userId: req.user._id, itemName: req.params.itemName}, (err, basketItem) => {
-            if (!err) {
-              if (basketItem) {
-                res.redirect("/account#basket")
-              } else {
+          BasketItem.findOne(
+            { userId: req.user._id, itemName: req.params.itemName },
+            (err, basketItem) => {
+              if (!err) {
+                if (basketItem) {
+                  res.redirect("/account#basket");
+                } else {
+                  const quantity = req.body.quantity;
+                  let itemPrice = foundItem.price;
+                  if (quantity > 100) {
+                    itemPrice = foundItem.bulkPrice;
+                  }
 
-                const quantity = req.body.quantity;
-                let itemPrice = foundItem.price;
-                if (quantity > 100) {
-                  itemPrice = foundItem.bulkPrice;
+                  const basketItem = new BasketItem({
+                    userId: req.user._id,
+                    itemName: foundItem.name,
+                    price: itemPrice,
+                    source: foundItem.source,
+                    quantity: quantity,
+                  });
+
+                  basketItem.save();
+                  res.redirect("/products");
                 }
-
-                const basketItem = new BasketItem({
-                  userId: req.user._id,
-                  itemName: foundItem.name,
-                  price: itemPrice,
-                  source: foundItem.source,
-                  quantity: quantity
-                });
-
-                basketItem.save();
-                res.redirect("/products");
-
               }
             }
-          });
-
+          );
         } else {
-          res.redirect("/log-in")
+          res.redirect("/log-in");
         }
       }
-    })
+    });
   });
 
 // Sign-in + Register
 
-app.route("/log-in")
+app
+  .route("/log-in")
   .get((req, res) => {
-    res.render("login")
+    res.render("login");
   })
   .post((req, res, next) => {
-
     const user = new User({
       username: req.body.username,
-      password: req.body.password
+      password: req.body.password,
     });
 
-    passport.authenticate('local', function(err, user) {
-    if (err) { return next(err); }
-    if (!user) { return res.redirect('/log-in'); }
-    req.logIn(user, function(err) {
-      if (err) { return next(err); }
-      return res.redirect('/account');
-    });
+    passport.authenticate("local", function (err, user) {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return res.redirect("/log-in");
+      }
+      req.logIn(user, function (err) {
+        if (err) {
+          return next(err);
+        }
+        return res.redirect("/account");
+      });
     })(req, res, next);
-
   });
 
-app.route("/register")
+app
+  .route("/register")
   .get((req, res) => {
-    res.render("register")
+    res.render("register");
   })
   .post((req, res) => {
     const newUser = {
       name: req.body.name,
       address: req.body.address,
-      username: req.body.username
-    }
+      username: req.body.username,
+    };
     User.register(newUser, req.body.password, (err, user) => {
       if (err) {
         console.log(err);
@@ -236,37 +252,54 @@ app.route("/register")
 
 // Account page + Basket
 
-app.route("/account")
-  .get((req, res) => {
-    if (req.isAuthenticated()) {
-      BasketItem.find({userId: req.user._id}, (err, basketItems) => {
-        if (!err) {
-          res.render("account", {username: req.user.username, name: req.user.name, address: req.user.address, basketItems: basketItems});
-        }
-      })
-    } else {
-      res.redirect("/log-in")
-    }
-  })
-  .post((req, res) => {
-    BasketItem.deleteOne({userId: req.user._id, itemName: req.body.basketItemName}, (err) => {
-      if (!err) {
-        res.redirect("/account#basket")
-      }
+app.get("/account", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render("account", {
+      username: req.user.username,
+      name: req.user.name,
+      address: req.user.address,
     });
-  });
+  } else {
+    res.redirect("/log-in");
+  }
+});
 
-app.get("/account/deleteAll", (req, res) => {
-  BasketItem.deleteMany({userId: req.user._id}, (err) => {
+app.post("/account/deleteAll", (req, res) => {
+  BasketItem.deleteMany({ userId: req.user._id }, (err) => {
     if (!err) {
-      res.redirect("/account#basket")
+      res.end();
     }
   });
 });
 
-app.get('/logout', (req, res) => {
+app.post("/account/deleteItem", (req, res) => {
+  BasketItem.deleteOne(
+    { userId: req.user._id, itemName: req.body.itemName },
+    (err) => {
+      if (!err) {
+        res.end();
+      }
+    }
+  );
+});
+
+app.get("/account/basket", (req, res) => {
+  if (req.isAuthenticated()) {
+    BasketItem.find({ userId: req.user._id }, (err, basketItems) => {
+      if (!err) {
+        if (basketItems) res.json(basketItems);
+      } else {
+        console.error(err);
+      }
+    });
+  } else {
+    res.redirect("/log-in");
+  }
+});
+
+app.get("/logout", (req, res) => {
   req.logout();
-  res.redirect('/');
+  res.redirect("/");
 });
 
 let port = process.env.PORT;
