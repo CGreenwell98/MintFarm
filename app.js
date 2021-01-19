@@ -264,6 +264,20 @@ app.get("/account", (req, res) => {
   }
 });
 
+app.get("/account/basket", (req, res) => {
+  if (req.isAuthenticated()) {
+    BasketItem.find({ userId: req.user._id }, (err, basketItems) => {
+      if (!err) {
+        if (basketItems) res.json(basketItems);
+      } else {
+        console.error(err);
+      }
+    });
+  } else {
+    res.redirect("/log-in");
+  }
+});
+
 app.post("/account/deleteAll", (req, res) => {
   BasketItem.deleteMany({ userId: req.user._id }, (err) => {
     if (!err) {
@@ -281,20 +295,6 @@ app.post("/account/deleteItem", (req, res) => {
       }
     }
   );
-});
-
-app.get("/account/basket", (req, res) => {
-  if (req.isAuthenticated()) {
-    BasketItem.find({ userId: req.user._id }, (err, basketItems) => {
-      if (!err) {
-        if (basketItems) res.json(basketItems);
-      } else {
-        console.error(err);
-      }
-    });
-  } else {
-    res.redirect("/log-in");
-  }
 });
 
 app.get("/logout", (req, res) => {

@@ -1,9 +1,9 @@
-
-html, body {
-    max-width: 100%;
-    overflow-x: hidden;
-    font-family: 'Montserrat', sans-serif;
-    background-color: #edffea;
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  font-family: "Montserrat", sans-serif;
+  background-color: #edffea;
 }
 
 h1 {
@@ -29,7 +29,7 @@ hr {
 /* Navbar */
 
 .navbar-text {
-  font-family: 'Yellowtail', cursive;
+  font-family: "Yellowtail", cursive;
   font-size: 1.5rem;
 }
 
@@ -52,6 +52,40 @@ footer i {
 
 .footer-text {
   font-size: 1.5rem;
-    font-family: 'Yellowtail', cursive;
-    margin-bottom: 5px;
+  font-family: "Yellowtail", cursive;
+  margin-bottom: 5px;
+}
+
+/* Hidden */
+
+.hidden {
+  display: none;
+}
+
+.invisible {
+  opacity: 0;
+}
+
+/* Spinner */
+
+.spinner:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 60px;
+  width: 60px;
+  margin-top: -30px;
+  margin-left: -30px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #216353;
+  animation: spinner 0.7s linear infinite;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
 }

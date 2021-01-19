@@ -3,43 +3,92 @@
 <div class="row product-page">
   <div class="col-md-3 product-bar">
     <h2 class="product-bar-title">Our Products:</h2>
-    <p>MintFarm offers a wide range of mint themed products. We serve both individuals and large businesses with different prices dependant on order sizes. Sign in to start shopping with us today!</p>
+    <p>
+      MintFarm offers a wide range of mint themed products. We serve both
+      individuals and large businesses with different prices dependant on order
+      sizes. Sign in to start shopping with us today!
+    </p>
     <div class="login-buttons">
-      <a href="/log-in" class="button-anchor"><button type="button" class="btn btn-dark login-button"><%= account %></button></a>
-      <a href="/account#basket" class="button-anchor"><button type="button" class="btn btn-dark login-button"><i class="fas fa-shopping-basket"></i> Basket</button></a>
+      <a href="/log-in" class="button-anchor"
+        ><button type="button" class="btn btn-dark login-button">
+          <%= account %>
+        </button></a
+      >
+      <a href="/account#basket" class="button-anchor"
+        ><button type="button" class="btn btn-dark login-button">
+          <i class="fas fa-shopping-basket"></i> Basket
+        </button></a
+      >
     </div>
-    <hr>
+    <hr />
     <div class="sort-items-box">
       <h2 class="product-bar-subTitle">Sort Items:</h2>
       <form action="/products" method="post">
-        <p><input type="checkbox" name="checkbox" value="priceAscending" onchange="this.form.submit()"> Price Ascending</p>
-        <p><input type="checkbox" name="checkbox" value="priceDescending" onchange="this.form.submit()"> Price Descending</p>
-        <p><input type="checkbox" name="checkbox" value="nameAscending" onchange="this.form.submit()"> Name Ascending</p>
-        <p><input type="checkbox" name="checkbox" value="nameDescending" onchange="this.form.submit()"> Name Descending</p>
+        <p>
+          <input
+            type="checkbox"
+            name="checkbox"
+            value="priceAscending"
+            onchange="this.form.submit()"
+          />
+          Price Ascending
+        </p>
+        <p>
+          <input
+            type="checkbox"
+            name="checkbox"
+            value="priceDescending"
+            onchange="this.form.submit()"
+          />
+          Price Descending
+        </p>
+        <p>
+          <input
+            type="checkbox"
+            name="checkbox"
+            value="nameAscending"
+            onchange="this.form.submit()"
+          />
+          Name Ascending
+        </p>
+        <p>
+          <input
+            type="checkbox"
+            name="checkbox"
+            value="nameDescending"
+            onchange="this.form.submit()"
+          />
+          Name Descending
+        </p>
       </form>
     </div>
-
   </div>
 
-  <div class="col-md-9 product-section">
-    <div class="row">
-
+  <div class="col-md-9 product-section spinner">
+    <div class="row product-display-area hidden">
       <% foundItems.forEach(item => { %>
       <div class="col-md-4">
         <div class="card product-card">
           <a class="card-anchor" href="/products/<%= item.name %>">
-            <img class="card-img-top" src="<%= item.source %>" alt="<%= item.name %>.img">
+            <img
+              class="card-img-top"
+              src="<%= item.source %>"
+              alt="<%= item.name %>.img"
+            />
             <div class="card-body">
               <h5 class="card-title"><%= item.name %></h5>
-              <p class="card-text price"><small class="text-muted">£ <%= item.price %></small></p>
+              <p class="card-text price">
+                <small class="text-muted">£ <%= item.price %></small>
+              </p>
             </div>
           </a>
         </div>
       </div>
       <% }) %>
-
     </div>
   </div>
 </div>
+
+<script src="/javascript/products.js" charset="utf-8" defer></script>
 
 <%- include("partials/footer"); -%>

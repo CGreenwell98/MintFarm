@@ -3,12 +3,11 @@ let basket;
 // Fetch user's basket data:
 fetch("/account/basket")
   .then((res) => res.json())
-  // .then((log) => console.log(log))
   .then((data) => {
     renderBasket(data);
     basket = data;
-    console.log(basket);
   })
+  .then((_) => removeSpinner())
   .catch((err) => console.error(err));
 
 // Delete Item from basket:
@@ -18,7 +17,6 @@ document.querySelector("#basket").addEventListener("click", function (event) {
   if (!clicked.classList.contains("delete-button")) return;
   const itemEl = event.target.closest(".account-basket-items");
   const itemName = itemEl.children[1].textContent;
-  const itemForm = itemEl.children[5];
   basket = basket.filter((item) => item.itemName !== itemName);
 
   fetch("/account/deleteItem", {
@@ -49,7 +47,7 @@ document
 // //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Functions:
 function displayItems(basketItems) {
-  let total = 0;
+  let totalCost = 0;
   let itemCost = 0;
   basketItems.forEach((item) => {
     // console.log(item);
@@ -66,38 +64,41 @@ function displayItems(basketItems) {
       <p class="basket-price">
         £ ${(itemCost = (item.price * item.quantity).toFixed(2))}
       </p>
-        <button type="submit" class="btn delete-button">X</button>
-        <input
-          type="hidden"
-          name="basketItemName"
-          value="${item.itemName}"
-        />
+        <button type="button" class="btn delete-button">X</button>
     </div>
     `;
     document
       .querySelector(".account-basket-bottom")
       .insertAdjacentHTML("beforebegin", html);
-    total = total + Number(itemCost);
+    totalCost += Number(itemCost);
   });
-  return total.toFixed(2);
+  return totalCost.toFixed(2);
 }
 
-function hideBasketUI(total) {
-  if (total == 0) {
-    document.querySelector(".account-basket-bottom").classList.toggle("hidden");
-    document.querySelector(".account-basket-table").classList.toggle("hidden");
-    document.querySelector(".basket-message").classList.toggle("hidden");
+function toggleBasketUI(data) {
+  if (data.length === 0) {
+    document.querySelector(".account-basket-bottom").style.display = "none";
+    document.querySelector(".account-basket-table").style.display = "none";
+    document.querySelector(".basket-message").style.display = "flex";
+  } else {
+    document.querySelector(".account-basket-bottom").style.display = "flex";
+    document.querySelector(".account-basket-table").style.display = "flex";
+    document.querySelector(".basket-message").style.display = "none";
   }
 }
 
 function renderBasket(data) {
-  const total = displayItems(data);
-  document.querySelector(".basket-total").textContent = `£${total}`;
-  hideBasketUI(total);
+  const totalCost = displayItems(data);
+  document.querySelector(".basket-total").textContent = `£${totalCost}`;
+  toggleBasketUI(data);
 }
 
 function deleteBasket() {
   document
     .querySelectorAll(".account-basket-items")
     .forEach((el) => el.remove());
+}
+
+function removeSpinner() {
+  document.querySelector(".spinner-box").classList.remove("invisible");
 }
