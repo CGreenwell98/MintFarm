@@ -161,39 +161,37 @@ app
   // Add item to basket:
   .post((req, res) => {
     Item.findOne({ name: req.params.itemName }, (err, foundItem) => {
-      if (!err) {
-        if (req.isAuthenticated()) {
-          // Checks if item is already in basket:
-          BasketItem.findOne(
-            { userId: req.user._id, itemName: req.params.itemName },
-            (err, basketItem) => {
-              if (!err) {
-                if (basketItem) {
-                  res.redirect("/account#basket");
-                } else {
-                  const quantity = req.body.quantity;
-                  let itemPrice = foundItem.price;
-                  if (quantity > 100) {
-                    itemPrice = foundItem.bulkPrice;
-                  }
-
-                  const basketItem = new BasketItem({
-                    userId: req.user._id,
-                    itemName: foundItem.name,
-                    price: itemPrice,
-                    source: foundItem.source,
-                    quantity: quantity,
-                  });
-
-                  basketItem.save();
-                  res.redirect("/products");
-                }
+      if (err) return;
+      if (req.isAuthenticated()) {
+        // Checks if item is already in basket:
+        BasketItem.findOne(
+          { userId: req.user._id, itemName: req.params.itemName },
+          (err, basketItem) => {
+            if (err) return;
+            if (basketItem) {
+              res.redirect("/account#basket");
+            } else {
+              const quantity = req.body.quantity;
+              let itemPrice = foundItem.price;
+              if (quantity > 100) {
+                itemPrice = foundItem.bulkPrice;
               }
+
+              const basketItem = new BasketItem({
+                userId: req.user._id,
+                itemName: foundItem.name,
+                price: itemPrice,
+                source: foundItem.source,
+                quantity: quantity,
+              });
+
+              basketItem.save();
+              res.redirect("/products");
             }
-          );
-        } else {
-          res.redirect("/log-in");
-        }
+          }
+        );
+      } else {
+        res.redirect("/log-in");
       }
     });
   });
