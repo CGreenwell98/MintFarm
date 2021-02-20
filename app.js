@@ -123,8 +123,7 @@ app.use((req, res, next) => {
 // Routes
 
 app.get("/", (req, res) => {
-  const googleMapsApi = process.env.API_SRC;
-  res.render("index", { googleMapsApi: googleMapsApi });
+  res.render("index");
 });
 
 // Product pages

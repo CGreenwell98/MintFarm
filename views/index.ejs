@@ -1,13 +1,24 @@
 <%- include("partials/header"); -%>
 
 <section id="title">
-  <div class="row title-container ">
-
+  <div class="row title-container">
     <div class="col-lg-6 title-left centre">
       <div class="title-box">
         <h1>Welcome to the MintFarm</h1>
-        <p>We are the only place for all your minty desires. As a trusted source of mint products in the greater London area we ensure that all our stock are of a premuim standard.</p>
-        <a href="/products"><button class="btn btn-dark title-button" type="button" name="button"><i class="fas fa-box-open"></i> Let's Shop</button></a>
+        <p>
+          We are the only place for all your minty desires. As a trusted source
+          of mint products in the greater London area we ensure that all our
+          stock are of a premuim standard.
+        </p>
+        <a href="/products"
+          ><button
+            class="btn btn-dark title-button"
+            type="button"
+            name="button"
+          >
+            <i class="fas fa-box-open"></i> Let's Shop
+          </button></a
+        >
       </div>
     </div>
 
@@ -16,7 +27,6 @@
         <i class="fas fa-leaf title-icon"></i>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -24,15 +34,20 @@
   <div class="row">
     <div class="col-md-4 qual-box">
       <i class="fas fa-truck qual-item"></i>
-      <p>Fast delivery service that reaches across the UK with free shipping on large orders.</p>
+      <p>
+        Fast delivery service that reaches across the UK with free shipping on
+        large orders.
+      </p>
     </div>
     <div class="col-md-4 qual-box">
       <i class="fas fa-pound-sign qual-item"></i>
-      <p>Money back guarantee for all our products given within 5 working days.</p>
+      <p>
+        Money back guarantee for all our products given within 5 working days.
+      </p>
     </div>
     <div class="col-md-4 qual-box">
-        <i class="fas fa-boxes qual-item"></i>
-        <p>Reduced prices for ordering more than 100 items in bulk.</p>
+      <i class="fas fa-boxes qual-item"></i>
+      <p>Reduced prices for ordering more than 100 items in bulk.</p>
     </div>
   </div>
 </section>
@@ -40,11 +55,16 @@
 <section id="tesitmonial">
   <div class="row">
     <div class="col-xl-10 test-box">
-      <img class="fabio" src="/images/fabio-ceo.jpg" alt="fabio.img">
+      <img class="fabio" src="/images/fabio-ceo.jpg" alt="fabio.img" />
       <div class="fabio-tesitmonial">
         <h4 class="test-title">Testimonial</h4>
         <h2 class="test-header">"I Never knew mint could be this good...</h2>
-        <p class="test-text">... After trying MintFarm's MintDelight ice-cream I knew that I had to sell these products in my supermarkets. Customer satisfcation is so high that the MintDelight range has become one fo our best selling products."</p>
+        <p class="test-text">
+          ... After trying MintFarm's MintDelight ice-cream I knew that I had to
+          sell these products in my supermarkets. Customer satisfcation is so
+          high that the MintDelight range has become one fo our best selling
+          products."
+        </p>
         <p class="test-info">- Fabio Fresco, CEO of Fresco Supermarkets</p>
       </div>
     </div>
@@ -53,15 +73,30 @@
 
 <section id="best-product">
   <div class="row">
-    <div class="col-xl-2">
-    </div>
+    <div class="col-xl-2"></div>
     <div class="col-xl-10 product-box">
-      <img class="ice-cream" src="/images/mint-ice-cream.jpg" alt="ice-cream.img">
+      <img
+        class="ice-cream"
+        src="/images/mint-ice-cream.jpg"
+        alt="ice-cream.img"
+      />
       <div class="product-review">
         <h4 class="product-title">Best Seller</h4>
         <h2 class="product-header">Voted the nations favourite ice-cream</h2>
-        <p class="product-text">Our MintBerry Delight ice-cream is a nationwide best seller. Last year over 200,000 units were sold in supermarkets and in online retail, making Mint Delight one of the countries favourite desserts.</p>
-        <a href="/products/MintBerry%20Delight"><button class="btn btn-dark button-product" type="button" name="button">View Product</button></a>
+        <p class="product-text">
+          Our MintBerry Delight ice-cream is a nationwide best seller. Last year
+          over 200,000 units were sold in supermarkets and in online retail,
+          making Mint Delight one of the countries favourite desserts.
+        </p>
+        <a href="/products/MintBerry%20Delight"
+          ><button
+            class="btn btn-dark button-product"
+            type="button"
+            name="button"
+          >
+            View Product
+          </button></a
+        >
       </div>
     </div>
   </div>
@@ -99,27 +134,17 @@
       </ul>
     </div>
   </div>
-
 </section>
 
 <!-- Map -->
 
 <script>
-function initMap() {
-  const options = {
-    zoom:10,
-    center:{lat:51.51, lng:-0.13}
-  }
-  const map = new google.maps.Map(document.getElementById("map"), options);
-  const marker = new google.maps.Marker({
-    position:{lat:51.559313,lng:-0.276910},
-    map:map
-  });
-}
-</script>
-
-<script defer
-  src=<%= googleMapsApi %>>
+  const mymap = L.map("map").setView([51.51, -0.13], 11);
+  L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  }).addTo(mymap);
+  L.marker([51.559313, -0.27691]).addTo(mymap);
 </script>
 
 <%- include("partials/footer"); -%>
