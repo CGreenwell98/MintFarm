@@ -1,32 +1,36 @@
-<%- include("partials/header"); -%>
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("partials/header"); -%>
+<body>
+  <%- include("partials/nav"); -%>
 
-<div class="item-page centre">
+  <div class="item-page centre">
 
-  <div class="wrapper">
-    <div class="product-img">
-      <img src="<%= item.source %>" height="450" width="450">
-    </div>
-    <div class="product-info">
-      <div class="product-text">
-        <h2 class="product-page-header"><%= item.name %></h2>
-        <p><%= item.desc %></p>
+    <div class="wrapper">
+      <div class="product-img">
+        <img src="<%= item.source %>" height="450" width="450">
       </div>
-      <div class="product-price-btn">
-        <p>Standard price: £<span><%= item.price %></span></p>
-        <p>Bulk price: £<span><%= item.bulkPrice %> <small> (for 100+ items)</small></p>
-        <form class="product-page-form" action="/products/<%= item.name %>" method="post">
-          <div class="quantity-box">
-            <label for="quantity">Quantity:</label>
-            <input type="number" class="form-control quantity" name="quantity" value=1>
-          </div>
-          <div class="product-page-button">
-            <button type="submit" class="btn btn-dark"><i class="fas fa-shopping-basket"></i> Add to Basket</button>
-          </div>
-        </form>
+      <div class="product-info">
+        <div class="product-text">
+          <h2 class="product-page-header"><%= item.name %></h2>
+          <p><%= item.desc %></p>
+        </div>
+        <div class="product-price-btn">
+          <p>Standard price: £<span><%= item.price %></span></p>
+          <p>Bulk price: £<span><%= item.bulkPrice %> <small> (for 100+ items)</small></p>
+          <form class="product-page-form" action="/products/<%= item.name %>" method="post">
+            <div class="quantity-box">
+              <label for="quantity">Quantity:</label>
+              <input type="number" class="form-control quantity" name="quantity" value=1>
+            </div>
+            <div class="product-page-button">
+              <button type="submit" class="btn btn-dark"><i class="fas fa-shopping-basket"></i> Add to Basket</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
+  
   </div>
-
-</div>
-
-<%- include("partials/noFooter"); -%>
+</body>
+</html>

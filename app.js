@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
 const passportConfig = require("./config/passport-config.js");
+const { BasketItem } = require("./models/schemas.js");
 
 const products = require("./routes/products.js");
 const user = require("./routes/user.js");
@@ -32,15 +33,17 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect(
-  "mongodb+srv://admin-chris:" +
-    process.env.PASSWORD_DB +
-    "@cluster0.jxlvl.mongodb.net/MintFarmDB",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+mongoose
+  .connect(
+    "mongodb+srv://admin-chris:" +
+      process.env.PASSWORD_DB +
+      "@cluster0.jxlvl.mongodb.net/MintFarmDB",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .catch((err) => console.error(err));
 mongoose.set("useCreateIndex", true);
 
 passportConfig();
@@ -58,16 +61,12 @@ app.use((req, res, next) => {
 
 //  Navbar basket item number
 
-// app.use((req,res,next) => {
+// app.use((req, res, next) => {
 //   if (req.isAuthenticated()) {
-//     BasketItem.find({userId:req.user._id}, (err, basketItems) =>{
+//     BasketItem.find({ userId: req.user._id }, (err, basketItems) => {
 //       if (!err) {
-//         let count = 0;
-//         basketItems.forEach( item => {
-//           count = count + 1;
-//         });
-//         res.locals.basketItemNumber = count.toString();
-//         console.log(res.locals.basketItemNumber);
+//         res.locals.basketItemNumber = basketItems.length.toString();
+//         console.log(basketItems.length);
 //       }
 //     });
 //   } else {

@@ -1,72 +1,76 @@
-<%- include("partials/header"); -%>
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("partials/header"); -%>
+  <body>
+    <%- include("partials/nav"); -%>
 
-<div class="row">
-  <!-- Left Nav-bar -->
-  <div class="col-lg-2 account-bar">
-    <ul class="account-list">
-      <li><a class="link" href="/">Home</a></li>
-      <li><a class="link" href="/products">Products</a></li>
-      <li><a class="link" href="#basket">Basket</a></li>
-      <li><a class="link" href="/logout">Log-Out</a></li>
-    </ul>
-  </div>
-
-  <!-- Main page -->
-  <div class="col-lg-10 account-container">
-    <div class="account-page">
-      <h1 class="account-title">Welcome to Your Account!</h1>
-
-      <h2 class="account-subTitle">Account Information:</h2>
-      <div class="account-page-box">
-        <p>Name: <%= name %></p>
-        <p>Address: <%= address %></p>
-        <p>Email-Address: <%= username %></p>
-        <button class="btn btn-dark logout-button">
-          <a href="/logout" class="link">Log Out</a>
-        </button>
+    <div class="row">
+      <!-- Left Nav-bar -->
+      <div class="col-lg-2 account-bar">
+        <ul class="account-list">
+          <li><a class="link" href="/">Home</a></li>
+          <li><a class="link" href="/products">Products</a></li>
+          <li><a class="link" href="#basket">Basket</a></li>
+          <li><a class="link" href="/logout">Log-Out</a></li>
+        </ul>
       </div>
 
-      <section id="basket">
-        <!-- Basket Title-->
-        <h2 class="account-subTitle">Basket:</h2>
-        <div class="account-page-box">
-          <div class="spinner-box invisible">
-            <p class="basket-message">Your Basket is Currently Empty</p>
+      <!-- Main page -->
+      <div class="col-lg-10 account-container">
+        <div class="account-page">
+          <h1 class="account-title">Welcome to Your Account!</h1>
 
-            <div class="account-basket-table">
-              <p class="basket-image"></p>
-              <p class="basket-name">Product Name:</p>
-              <p class="basket-quantity">Quantity:</p>
-              <p class="basket-price">Price per Item:</p>
-              <p class="basket-price">Price (All Items):</p>
-              <p class="btn delete-button"></p>
-            </div>
-
-            <!-- Basket Items -->
-
-            <!-- Basket Bottom -->
-            <div class="account-basket-bottom">
-              <p class="basket-image"></p>
-              <p class="basket-name"></p>
-              <p class="basket-quantity"></p>
-              <p class="basket-price">Total Price:</p>
-              <p class="basket-price basket-total"></p>
-              <a
-                ><button
-                  type="button"
-                  class="btn btn-danger basket-button delete-all-btn"
-                >
-                  <small>Delete All</small>
-                </button></a
-              >
-            </div>
+          <h2 class="account-subTitle">Account Information:</h2>
+          <div class="account-page-box">
+            <p>Name: <%= name %></p>
+            <p>Address: <%= address %></p>
+            <p>Email-Address: <%= username %></p>
+            <button class="btn btn-dark logout-button">
+              <a href="/logout" class="link">Log Out</a>
+            </button>
           </div>
+
+          <section id="basket">
+            <!-- Basket Title-->
+            <h2 class="account-subTitle">Basket:</h2>
+            <div class="account-page-box">
+              <div class="spinner-box invisible">
+                <p class="basket-message">Your Basket is Currently Empty</p>
+
+                <div class="account-basket-table">
+                  <p class="basket-image"></p>
+                  <p class="basket-name">Product Name:</p>
+                  <p class="basket-quantity">Quantity:</p>
+                  <p class="basket-price">Price per Item:</p>
+                  <p class="basket-price">Price (All Items):</p>
+                  <p class="btn delete-button"></p>
+                </div>
+
+                <!-- Basket Items -->
+
+                <!-- Basket Bottom -->
+                <div class="account-basket-bottom">
+                  <p class="basket-image"></p>
+                  <p class="basket-name"></p>
+                  <p class="basket-quantity"></p>
+                  <p class="basket-price">Total Price:</p>
+                  <p class="basket-price basket-total"></p>
+                  <a
+                    ><button
+                      type="button"
+                      class="btn btn-danger basket-button delete-all-btn"
+                    >
+                      <small>Delete All</small>
+                    </button></a
+                  >
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
-      </section>
+      </div>
     </div>
-  </div>
-</div>
 
-<script src="/javascript/basket.js" charset="utf-8" defer></script>
-
-<%- include("partials/noFooter"); -%>
+    <script src="/javascript/basket.js" charset="utf-8" defer></script>
+  </body>
+</html>
