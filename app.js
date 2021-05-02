@@ -4,11 +4,10 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
 const passportConfig = require("./config/passport-config.js");
-const { BasketItem } = require("./models/schemas.js");
 
-const products = require("./routes/products.js");
-const user = require("./routes/user.js");
-const account = require("./routes/account.js");
+const productRoutes = require("./routes/productRoutes.js");
+const userRoutes = require("./routes/userRoutes.js");
+const accountRoutes = require("./routes/accountRoutes.js");
 
 require("dotenv").config();
 
@@ -81,12 +80,12 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.use("/", user);
-app.use("/products", products);
-app.use("/account", account);
+app.use("/", userRoutes);
+app.use("/products", productRoutes);
+app.use("/account", accountRoutes);
 
 let port = process.env.PORT;
 if (port == null || port == "") {
   port = 3000;
 }
-app.listen(port);
+app.listen(port, () => console.log(`Listening on port ${port}`));
