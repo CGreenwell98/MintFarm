@@ -2,10 +2,9 @@ const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/productController");
 
-router
-  .route("/")
-  .get(productController.getProductsPage)
-  .post(productController.sortItems);
+router.get("/", productController.getProductsPage);
+
+router.get("/sort", productController.sortItems);
 
 router
   .route("/:itemName")

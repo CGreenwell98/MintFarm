@@ -41,3 +41,17 @@ exports.deleteBasketItem = (req, res) => {
     }
   );
 };
+
+// exports.basketItemsQuantity = (req, res, next) => {
+//   if (req.isAuthenticated()) {
+//     BasketItem.find({ userId: req.user._id }, (err, basketItems) => {
+//       if (!err) {
+//         res.locals.basketItemNumber = basketItems.length.toString();
+//         console.log(basketItems.length);
+//       }
+//     });
+//   } else {
+//     res.locals.basketItemNumber = "0";
+//   }
+//   next();
+// }

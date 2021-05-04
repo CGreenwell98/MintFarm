@@ -27,12 +27,12 @@
         <hr />
         <div class="sort-items-box">
           <h2 class="product-bar-subTitle">Sort Items:</h2>
-          <form action="/products" method="post">
+          <form action="/products/sort" method="GET">
             <p>
               <input
                 type="checkbox"
-                name="checkbox"
-                value="priceAscending"
+                name="sortType"
+                value="price"
                 onchange="this.form.submit()"
               />
               Price Ascending
@@ -40,8 +40,8 @@
             <p>
               <input
                 type="checkbox"
-                name="checkbox"
-                value="priceDescending"
+                name="sortType"
+                value="-price"
                 onchange="this.form.submit()"
               />
               Price Descending
@@ -49,8 +49,8 @@
             <p>
               <input
                 type="checkbox"
-                name="checkbox"
-                value="nameAscending"
+                name="sortType"
+                value="name"
                 onchange="this.form.submit()"
               />
               Name Ascending
@@ -58,8 +58,8 @@
             <p>
               <input
                 type="checkbox"
-                name="checkbox"
-                value="nameDescending"
+                name="sortType"
+                value="-name"
                 onchange="this.form.submit()"
               />
               Name Descending

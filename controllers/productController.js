@@ -1,4 +1,3 @@
-const sort = require("../public/javascript/sorting.js");
 const { Item, BasketItem } = require("../models/schemas.js");
 
 exports.getProductsPage = (req, res) => {
@@ -9,14 +8,14 @@ exports.getProductsPage = (req, res) => {
   });
 };
 
-exports.sortItems = (req, res) => {
-  Item.find((err, items) => {
-    if (!err) {
-      const sortType = req.body.checkbox;
-      const sortedArray = sort.items(items, sortType);
-      res.render("products", { foundItems: sortedArray });
-    }
-  });
+exports.sortItems = async (req, res) => {
+  try {
+    const items = Item.find();
+    const sortedArray = await items.sort(req.query.sortType);
+    res.render("products", { foundItems: sortedArray });
+  } catch (err) {
+    res.status(400);
+  }
 };
 
 exports.getItemPage = (req, res) => {
@@ -27,38 +26,36 @@ exports.getItemPage = (req, res) => {
   });
 };
 
-exports.addBasketItem = (req, res) => {
-  Item.findOne({ name: req.params.itemName }, (err, foundItem) => {
-    if (err) return;
+exports.addBasketItem = async (req, res) => {
+  try {
+    const foundItem = await Item.findOne({ name: req.params.itemName });
 
     // Checks if item is already in basket:
-    BasketItem.findOne(
-      { userId: req.user._id, itemName: req.params.itemName },
-      (err, basketItem) => {
-        if (err) return;
-        if (basketItem) {
-          res.redirect("/account#basket");
-        } else {
-          const quantity = req.body.quantity;
-          let itemPrice = foundItem.price;
-          if (quantity > 100) {
-            itemPrice = foundItem.bulkPrice;
-          }
+    const basketItem = await BasketItem.findOne({
+      userId: req.user._id,
+      itemName: req.params.itemName,
+    });
+    if (basketItem) return res.redirect("/account#basket");
 
-          const basketItem = new BasketItem({
-            userId: req.user._id,
-            itemName: foundItem.name,
-            price: itemPrice,
-            source: foundItem.source,
-            quantity: quantity,
-          });
+    const quantity = req.body.quantity;
+    let itemPrice = foundItem.price;
+    if (quantity > 100) itemPrice = foundItem.bulkPrice;
 
-          basketItem.save();
-          res.redirect("/products");
-        }
-      }
-    );
-  });
+    BasketItem.create({
+      userId: req.user._id,
+      itemName: foundItem.name,
+      price: itemPrice,
+      source: foundItem.source,
+      quantity: quantity,
+    });
+
+    res.redirect("/products");
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: "Item not added",
+    });
+  }
 };
 
 exports.checkBasketAuth = (req, res, next) => {
