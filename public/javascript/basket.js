@@ -20,7 +20,7 @@ document.querySelector("#basket").addEventListener("click", function (event) {
   basket = basket.filter((item) => item.itemName !== itemName);
 
   fetch("/account/deleteItem", {
-    method: "POST",
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
     },
@@ -37,7 +37,7 @@ document
   .addEventListener("click", function () {
     basket = [];
     fetch("/account/deleteAll", {
-      method: "POST",
+      method: "DELETE",
     }).then((_) => {
       deleteBasket();
       renderBasket(basket);

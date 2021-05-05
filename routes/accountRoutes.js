@@ -6,7 +6,7 @@ router.use("/", accountController.checkAuth);
 
 router.get("/", accountController.getAccountPage);
 router.get("/basket", accountController.getBasketItems);
-router.post("/deleteAll", accountController.deleteAllBasketItems);
-router.post("/deleteItem", accountController.deleteBasketItem);
+router.delete("/deleteAll", accountController.deleteAllBasketItems);
+router.delete("/deleteItem", accountController.deleteBasketItem);
 
 module.exports = router;
