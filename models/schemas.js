@@ -30,8 +30,14 @@ const BasketItem = mongoose.model("Basket Item", basketSchema);
 const userSchema = new mongoose.Schema({
   name: String,
   address: String,
-  email: String,
-  password: String,
+  email: {
+    type: String,
+    required: [true, "E-mail address required"],
+  },
+  password: {
+    type: String,
+    required: [true, "Password required"],
+  },
 });
 
 userSchema.plugin(passportLocalMongoose);

@@ -4,6 +4,8 @@ const session = require("express-session");
 const passport = require("passport");
 const passportConfig = require("./config/passport-config.js");
 
+const AppError = require("./utils/appError");
+const globalErrorHandler = require("./controllers/errorController");
 const productRoutes = require("./routes/productRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
 const accountRoutes = require("./routes/accountRoutes.js");
@@ -54,5 +56,12 @@ app.get("/", (req, res) => {
 app.use("/", userRoutes);
 app.use("/products", productRoutes);
 app.use("/account", accountRoutes);
+
+app.all("*", (req, res, next) => {
+  const err = new AppError(`Cant find ${req.originalUrl} on this server!`, 404);
+  next(err);
+});
+
+app.use(globalErrorHandler);
 
 module.exports = app;
