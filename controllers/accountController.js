@@ -13,45 +13,32 @@ exports.getAccountPage = (req, res) => {
   });
 };
 
-exports.getBasketItems = (req, res) => {
-  BasketItem.find({ userId: req.user._id }, (err, basketItems) => {
-    if (!err) {
-      if (basketItems) res.json(basketItems);
-    } else {
-      console.error(err);
-    }
-  });
+exports.getBasketItems = async (req, res, next) => {
+  try {
+    const basketItems = await BasketItem.find({ userId: req.user._id });
+    if (basketItems) res.json(basketItems);
+  } catch (err) {
+    next(err);
+  }
 };
 
-exports.deleteAllBasketItems = (req, res) => {
-  BasketItem.deleteMany({ userId: req.user._id }, (err) => {
-    if (!err) {
-      res.end();
-    }
-  });
+exports.deleteAllBasketItems = async (req, res, next) => {
+  try {
+    await BasketItem.deleteMany({ userId: req.user._id });
+    res.end();
+  } catch (err) {
+    next(err);
+  }
 };
 
-exports.deleteBasketItem = (req, res) => {
-  BasketItem.deleteOne(
-    { userId: req.user._id, itemName: req.body.itemName },
-    (err) => {
-      if (!err) {
-        res.end();
-      }
-    }
-  );
+exports.deleteBasketItem = async (req, res, next) => {
+  try {
+    await BasketItem.deleteOne({
+      userId: req.user._id,
+      itemName: req.body.itemName,
+    });
+    res.end();
+  } catch (err) {
+    next(err);
+  }
 };
-
-// exports.basketItemsQuantity = (req, res, next) => {
-//   if (req.isAuthenticated()) {
-//     BasketItem.find({ userId: req.user._id }, (err, basketItems) => {
-//       if (!err) {
-//         res.locals.basketItemNumber = basketItems.length.toString();
-//         console.log(basketItems.length);
-//       }
-//     });
-//   } else {
-//     res.locals.basketItemNumber = "0";
-//   }
-//   next();
-// }

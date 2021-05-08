@@ -1,32 +1,34 @@
 const { Item, BasketItem } = require("../models/schemas.js");
 
-exports.getProductsPage = (req, res) => {
-  Item.find((err, foundItems) => {
-    if (!err) {
-      res.render("products", { foundItems: foundItems });
-    }
-  });
+exports.getProductsPage = async (req, res, next) => {
+  try {
+    const foundItems = await Item.find();
+    res.render("products", { foundItems: foundItems });
+  } catch (err) {
+    next(err);
+  }
 };
 
-exports.sortItems = async (req, res) => {
+exports.sortItems = async (req, res, next) => {
   try {
     const items = Item.find();
     const sortedArray = await items.sort(req.query.sortType);
     res.render("products", { foundItems: sortedArray });
   } catch (err) {
-    res.status(400);
+    next(err);
   }
 };
 
-exports.getItemPage = (req, res) => {
-  Item.findOne({ name: req.params.itemName }, (err, foundItem) => {
-    if (!err) {
-      res.render("product-page", { item: foundItem });
-    }
-  });
+exports.getItemPage = async (req, res, next) => {
+  try {
+    const foundItem = await Item.findOne({ name: req.params.itemName });
+    res.render("product-page", { item: foundItem });
+  } catch (err) {
+    next(err);
+  }
 };
 
-exports.addBasketItem = async (req, res) => {
+exports.addBasketItem = async (req, res, next) => {
   try {
     const foundItem = await Item.findOne({ name: req.params.itemName });
 
@@ -51,10 +53,7 @@ exports.addBasketItem = async (req, res) => {
 
     res.redirect("/products");
   } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      message: "Item not added",
-    });
+    next(err);
   }
 };
 
@@ -62,3 +61,17 @@ exports.checkBasketAuth = (req, res, next) => {
   if (!req.isAuthenticated()) return res.redirect("/log-in");
   next();
 };
+
+// exports.basketItemsQuantity = (req, res, next) => {
+//   if (req.isAuthenticated()) {
+//     BasketItem.find({ userId: req.user._id }, (err, basketItems) => {
+//       if (!err) {
+//         res.locals.basketItemNumber = basketItems.length.toString();
+//         console.log(basketItems.length);
+//       }
+//     });
+//   } else {
+//     res.locals.basketItemNumber = "0";
+//   }
+//   next();
+// }
